@@ -9,7 +9,7 @@
 
 **A state-aware AI backend that guides merchants through structured onboarding — step by step, no hallucinations.**
 
-[Live Demo](https://onboarding-agent-5i3o.onrender.com) · [Swagger UI](https://onboarding-agent-5i3o.onrender.com/swagger-ui/index.html) · [Report Bug](https://github.com/VaishnavBhosale/onboarding-agent/issues)
+[Live Demo](https://merchantflow-qu6i.onrender.com/) · [Swagger UI](https://merchantflow-qu6i.onrender.com//swagger-ui/index.html) · [Report Bug](https://github.com/VaishnavBhosale/MerchantFlow)
 
 </div>
 
@@ -149,8 +149,8 @@ State is stored in **Redis** for fast, reliable lookups — even across restarts
 
 | Resource | URL |
 |---|---|
-| 🚀 Base URL | https://onboarding-agent-5i3o.onrender.com |
-| 📖 Swagger UI | https://onboarding-agent-5i3o.onrender.com/swagger-ui/index.html |
+| 🚀 Base URL | https://merchantflow-qu6i.onrender.com/ |
+| 📖 Swagger UI | https://merchantflow-qu6i.onrender.com/swagger-ui/index.html |
 
 > **Note:** Deployed on Render's free tier — may take ~30 seconds to wake up on first request.
 
@@ -168,7 +168,7 @@ State is stored in **Redis** for fast, reliable lookups — even across restarts
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/VaishnavBhosale/onboarding-agent.git
+git clone https://github.com/VaishnavBhosale/MerchantFlow.git
 cd onboarding-agent
 
 # 2. Set environment variables
@@ -188,7 +188,7 @@ App starts at: `http://localhost:8080`
 
 ```bash
 # Build image
-docker build -t onboarding-agent .
+docker build -t MerchantFlow .
 
 # Run container
 docker run -p 8080:8080 \
