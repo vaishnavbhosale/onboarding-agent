@@ -9,7 +9,7 @@
 
 **A state-aware AI backend that guides merchants through structured onboarding — step by step, no hallucinations.**
 
-[Live Demo](https://merchantflow-qu6i.onrender.com/) · [Swagger UI](https://merchantflow-qu6i.onrender.com//swagger-ui/index.html) · [Report Bug](https://github.com/VaishnavBhosale/MerchantFlow)
+[Live Demo](https://merchantflow-qu6i.onrender.com/) · [Swagger UI](https://merchantflow-qu6i.onrender.com/swagger-ui/index.html) · [Report Bug](https://github.com/VaishnavBhosale/MerchantFlow)
 
 </div>
 
