@@ -1,4 +1,4 @@
-#                                                           MerchantFlow 
+# MerchantFlow
 
 <div align="center">
 
@@ -15,15 +15,17 @@
 
 ---
 
-## 📌 What is This?
+## 💡 Why I Built This
 
-Most AI agents fail in production because they let the **LLM decide what to execute** — which leads to hallucinations, skipped steps, and unpredictable behavior.
+Most AI onboarding agents fail in production because they let the LLM decide what action to execute — leading to hallucinations, skipped steps, and unpredictable behavior.
 
-This project takes a different approach:
+MerchantFlow solves this with one simple principle:
 
 > **AI handles understanding. Backend handles execution.**
 
-The LLM classifies the user's intent (`GST`, `KYC`, `BANK`, `NEXT`). A **strict state machine** enforces the correct workflow order. The result is a reliable, production-safe onboarding agent.
+The LLM classifies intent. A strict state machine enforces order. The result is a reliable, production-safe onboarding agent where a wrong action is architecturally impossible — not just unlikely.
+
+This mirrors the problem enterprise AI faces at scale: AI agents need governed, deterministic guardrails to be trusted in production. The state machine here is that governance layer.
 
 ```
 GST Verification → KYC Verification → Bank Verification → ✅ Complete
@@ -37,16 +39,16 @@ GST Verification → KYC Verification → Bank Verification → ✅ Complete
 |---|---|---|
 | AI / NLU | LangChain4j + Gemini | Intent classification only |
 | Workflow | Spring Boot State Machine | Deterministic step enforcement |
-| State Store | Redis | Fast merchant state lookup |
+| State Store | In-Memory (Java Map) | Merchant state during session |
 | API Docs | SpringDoc / Swagger UI | Interactive testing |
 | Deploy | Docker + Render | Cloud hosting |
 
 ### Why AI for classification only?
 
 - ✅ **No hallucination risk** — AI can't trigger wrong steps
-- ✅ **Deterministic behavior** — backend enforces order
+- ✅ **Deterministic behavior** — backend enforces order, not the LLM
 - ✅ **Easy to debug** — AI output is just a label (`GST`, `KYC`, etc.)
-- ✅ **Scalable** — swap LLMs without changing business logic
+- ✅ **Swappable** — change LLMs without touching business logic
 
 ---
 
@@ -73,6 +75,7 @@ GST Verification → KYC Verification → Bank Verification → ✅ Complete
 - **Language:** Java 17
 - **Framework:** Spring Boot
 - **AI Integration:** LangChain4j (Gemini / Groq)
+- **State Storage:** In-memory Java Map (session-scoped)
 - **API Docs:** SpringDoc OpenAPI (Swagger UI)
 - **Build:** Maven
 - **Deployment:** Docker + Render
@@ -132,18 +135,18 @@ GET /api/chat?message=what next 27ABCDE1234F1Z4
 
 ---
 
-## 🧠 Memory & "What Next?" Feature
+## 🧠 "What Next?" Feature
 
-The agent tracks each merchant's progress across all three steps:
+The agent tracks each merchant's onboarding progress and tells them exactly what step comes next:
 
 ```
 User:  "what next 27ABCDE1234F1Z4"
 Agent: "GST verified ✅. Please proceed with KYC verification."
 ```
 
-State is stored in **Redis** for fast, reliable lookups — even across restarts.
+Merchant state is held in-memory during the server session. See roadmap for planned persistence upgrade.
 
-
+---
 
 ## 🌍 Live Demo
 
@@ -152,9 +155,9 @@ State is stored in **Redis** for fast, reliable lookups — even across restarts
 | 🚀 Base URL | https://merchantflow-qu6i.onrender.com/ |
 | 📖 Swagger UI | https://merchantflow-qu6i.onrender.com/swagger-ui/index.html |
 
-> **Note:** Deployed on Render's free tier — may take ~30 seconds to wake up on first request.
+> **Note:** Deployed on Render's free tier. First request may take ~30 seconds due to cold start. Subsequent requests are instant.
 
-
+---
 
 ## 🚀 Running Locally
 
@@ -162,18 +165,18 @@ State is stored in **Redis** for fast, reliable lookups — even across restarts
 
 - Java 17+
 - Maven
-- Gemini API key
+- Gemini API key (get one free at [aistudio.google.com](https://aistudio.google.com))
 
 ### Steps
 
 ```bash
 # 1. Clone the repo
 git clone https://github.com/VaishnavBhosale/MerchantFlow.git
-cd onboarding-agent
+cd MerchantFlow
 
-# 2. Set environment variables
+# 2. Set your API key
 export GEMINI_API_KEY=your_key_here
-# or
+# or use Groq instead
 export GROQ_API_KEY=your_key_here
 
 # 3. Build and run
@@ -183,20 +186,23 @@ java -jar target/*.jar
 
 App starts at: `http://localhost:8080`
 
+Open Swagger UI at: `http://localhost:8080/swagger-ui/index.html`
+
+---
 
 ### 🐳 Docker
 
 ```bash
 # Build image
-docker build -t MerchantFlow .
+docker build -t merchantflow .
 
 # Run container
 docker run -p 8080:8080 \
   -e GEMINI_API_KEY=your_key_here \
-  onboarding-agent
+  merchantflow
 ```
 
-
+---
 
 ## 🔐 Security
 
@@ -204,25 +210,24 @@ docker run -p 8080:8080 \
 - No secrets committed to version control
 - GitHub push protection enabled
 
-
+---
 
 ## 🗺 Roadmap
 
-- [ ] JWT Authentication
-- [ ] PostgreSQL for persistent merchant data
-- [ ] Multi-merchant concurrent onboarding
-- [ ] Async / event-driven processing
-- [ ] Conversation memory (multi-turn chat history)
-- [ ] React frontend dashboard
+- [ ] **Redis integration** — persist merchant state across server restarts
+- [ ] **PostgreSQL** — permanent merchant records and audit trail
+- [ ] **JWT Authentication** — secure multi-tenant access so merchants only see their own data
+- [ ] **Real GST/KYC API integration** — replace mock verification with actual external APIs
+- [ ] **Async processing** — handle slow external verification calls without blocking
+- [ ] **Conversation memory** — multi-turn chat history so the agent remembers context
+- [ ] **React frontend** — dashboard for merchants to track onboarding progress
 
-
+---
 
 ## 👨‍💻 Author
 
 **Vaishnav Bhosale**
 
-
-
 <div align="center">
-<sub>Built with Java · Spring Boot · LangChain4j · Redis · Docker</sub>
+<sub>Built with Java · Spring Boot · LangChain4j · Docker</sub>
 </div>
